@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/bartekpacia/chariot-rc#readme",
   "dependencies": {
-    "firebase-admin": "^9.0.0"
+    "firebase-admin": "^9.0.0",
+    "johnny-five": "^2.0.0"
   }
 }

@@ -11,7 +11,7 @@ const ref = db.ref("chariot_1")
 
 readline.emitKeypressEvents(process.stdin)
 process.stdin.setRawMode(true)
-process.stdin.on("keypress", async (str, key) => {
+process.stdin.on("keypress", (str, key) => {
   let engine = 0
   if (key.name === "w") {
     engine = 1
@@ -23,7 +23,7 @@ process.stdin.on("keypress", async (str, key) => {
     engine = 0
   }
 
-  await ref.set({ engine: engine })
+  ref.set({ engine: engine })
   console.log(`engine: ${engine}`)
 })
 

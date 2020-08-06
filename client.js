@@ -1,4 +1,19 @@
 const admin = require("firebase-admin")
+const five = require("johnny-five")
+const board = new five.Board()
+
+let RED
+let YELLOW
+let GREEN
+let SERVO
+
+board.on("ready", () => {
+  console.log("board is ready!")
+  RED = new five.Led(8)
+  YELLOW = new five.Led(9)
+  GREEN = new five.Led(10)
+  SERVO = new five.Servo(11)
+})
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -10,4 +25,28 @@ const ref = db.ref("chariot_1")
 
 ref.on("child_changed", (snapshot) => {
   console.log(snapshot.val())
+  const engine = snapshot.val()
+
+  if (engine == 1) {
+    SERVO.max()
+    RED.off()
+    GREEN.on()
+    YELLOW.off()
+  } else if (engine == 0) {
+    SERVO.center()
+    RED.off()
+    GREEN.off()
+    YELLOW.on()
+  } else if (engine == -1) {
+    SERVO.min()
+    RED.on()
+    GREEN.off()
+    YELLOW.off()
+  }
+})
+
+process.on("exit", () => {
+  RED.off()
+  GREEN.off()
+  YELLOW.off()
 })
