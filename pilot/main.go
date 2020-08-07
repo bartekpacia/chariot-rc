@@ -1,13 +1,15 @@
 package main
 
 import (
-	"os"
 	"context"
-	"firebase.google.com/go"
-	db "firebase.google.com/go/db"
+	"log"
+	"os"
+	"unicode"
+
+	firebase "firebase.google.com/go"
+	"firebase.google.com/go/db"
 	"github.com/eiannone/keyboard"
 	"google.golang.org/api/option"
-	"log"
 )
 
 type movement struct {
@@ -20,43 +22,52 @@ func main() {
 	config := firebase.Config{DatabaseURL: "https://chariot-rc.firebaseio.com/"}
 	app, err := firebase.NewApp(context.Background(), &config, sa)
 	if err != nil {
-		log.Fatalf("error initializing app: %v\n", err)
+		log.Fatalf("Error initializing App: %v\n", err)
 	}
 
 	client, err := app.Database(context.Background())
 	if err != nil {
-		log.Fatalf("error initializing database: %v\n", err)
+		log.Fatalf("Error initializing Database: %v\n", err)
 	}
 
-	keysEvents, err := keyboard.GetKeys(10)
+	keysEvents, err := keyboard.GetKeys(0)
 	if err != nil {
 		panic(err)
 	}
 
-	log.Println("press ESC to quit")
-	for {
+	log.Println("Press ESC to quit")
+	
+	for true {
 		event := <-keysEvents
+
 		if event.Err != nil {
 			panic(event.Err)
 		}
-		log.Printf("you pressed: rune %q, key %X\r\n", event.Rune, event.Key)
+
+		// Handle ESC
 		if event.Key == keyboard.KeyEsc {
-			log.Printf("shutdown\n")
+			log.Println("Shutdown")
 			break
 		}
-
+		
+		// Handle Ctrl + C
 		if event.Rune == 0 && event.Key == 3 {
-			log.Printf("shutdown\n")
+			log.Println("Shutdown")
 			os.Exit(0)
 		}
+
+		event.Rune = unicode.ToLower(event.Rune)
+		log.Printf("%q\n", event.Rune)
+
 
 		go update(client, event.Rune)
 	}
 }
 
+// Determines the move and sends it to
 func update(client *db.Client, char rune) {
 	movement := new(movement)
-
+	
 	switch char {
 	case 'w':
 		movement.Engine = 1
@@ -67,6 +78,11 @@ func update(client *db.Client, char rune) {
 	case 'd':
 		movement.Wheel = 1
 	}
-
-	client.NewRef("chariot_1").Set(context.Background(), &movement)
+	
+	
+	ref := client.NewRef("chariot_1")
+	err := ref.Set(context.Background(), &movement)
+	if err != nil {
+		log.Fatalf("error updating database")
+	}
 }
