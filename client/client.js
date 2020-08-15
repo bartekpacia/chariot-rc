@@ -24,24 +24,26 @@ const db = admin.database()
 const ref = db.ref("chariot_1")
 
 ref.on("child_changed", (snapshot) => {
-  console.log(snapshot.val())
-  const engine = snapshot.val()
-
-  if (engine == 1) {
-    SERVO.max()
-    RED.off()
-    GREEN.on()
-    YELLOW.off()
-  } else if (engine == 0) {
-    SERVO.center()
-    RED.off()
-    GREEN.off()
-    YELLOW.on()
-  } else if (engine == -1) {
-    SERVO.min()
-    RED.on()
-    GREEN.off()
-    YELLOW.off()
+  // FORWARD-BACKWARD MOVEMENT
+  if (snapshot.key == "engine") {
+    engine = snapshot.val()
+    console.log(`UPDATE engine, val: ${engine}`)
+    if (engine == 1) {
+      SERVO.max()
+      RED.off()
+      GREEN.on()
+      YELLOW.off()
+    } else if (engine == 0) {
+      SERVO.center()
+      RED.off()
+      GREEN.off()
+      YELLOW.on()
+    } else if (engine == -1) {
+      SERVO.min()
+      RED.on()
+      GREEN.off()
+      YELLOW.off()
+    }
   }
 })
 
