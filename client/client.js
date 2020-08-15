@@ -34,7 +34,7 @@ ref.on("child_changed", (snapshot) => {
       GREEN.on()
       YELLOW.off()
     } else if (engine == 0) {
-      SERVO.to(102)
+      SERVO.to(95)
       RED.off()
       GREEN.off()
       YELLOW.on()
