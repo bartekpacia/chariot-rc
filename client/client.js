@@ -17,6 +17,13 @@ board.on("ready", () => {
   RED.blink()
   YELLOW.blink()
   GREEN.blink()
+
+  setTimeout(function () {
+    RED.stop()
+    YELLOW.stop()
+    GREEN.stop()
+    console.log("program is ready!")
+  }, 2000)
 })
 
 admin.initializeApp({
