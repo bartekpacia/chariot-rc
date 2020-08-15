@@ -13,6 +13,18 @@ board.on("ready", () => {
   YELLOW = new five.Led(9)
   GREEN = new five.Led(10)
   SERVO = new five.Servo(11)
+
+  RED.blink()
+  YELLOW.blink()
+  GREEN.blink()
+
+  RED.blink()
+  YELLOW.blink()
+  GREEN.blink()
+
+  RED.blink()
+  YELLOW.blink()
+  GREEN.blink()
 })
 
 admin.initializeApp({
