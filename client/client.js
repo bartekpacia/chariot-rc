@@ -19,9 +19,9 @@ board.on("ready", () => {
   GREEN.blink()
 
   setTimeout(function () {
-    RED.off()
-    YELLOW.off()
-    GREEN.off()
+    RED.stop().off()
+    YELLOW.stop().off()
+    GREEN.stop().off()
     console.log("program is ready!")
   }, 2000)
 })
