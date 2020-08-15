@@ -16,7 +16,7 @@ board.on("ready", () => {
 })
 
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert("./key.json"),
   databaseURL: "https://chariot-rc.firebaseio.com",
 })
 
