@@ -17,14 +17,6 @@ board.on("ready", () => {
   RED.blink()
   YELLOW.blink()
   GREEN.blink()
-
-  RED.blink()
-  YELLOW.blink()
-  GREEN.blink()
-
-  RED.blink()
-  YELLOW.blink()
-  GREEN.blink()
 })
 
 admin.initializeApp({
