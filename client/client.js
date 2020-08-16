@@ -47,7 +47,7 @@ ref.on("child_changed", (snapshot) => {
     engine = snapshot.val()
     console.log(`UPDATE engine, val: ${engine}`)
     if (engine == 1) {
-      SERVO.to(0)
+      SERVO.to(10)
       RED.off()
       GREEN.on()
       YELLOW.off()
