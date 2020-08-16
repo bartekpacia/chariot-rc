@@ -44,7 +44,8 @@ func init() {
 	fmt.Println(ref.Path)
 }
 func main() {
-	go update()
+	resetMovement()
+	go updateDatabse()
 
 	keysEvents, err := keyboard.GetKeys(0)
 	if err != nil {
@@ -68,8 +69,7 @@ func main() {
 
 		// Handle Ctrl + C
 		if event.Rune == 0 && event.Key == 3 {
-			fmt.Println("Shutdown")
-			os.Exit(0)
+			shutdown()
 		}
 
 		event.Rune = unicode.ToLower(event.Rune)
@@ -91,8 +91,8 @@ func main() {
 	}
 }
 
-// Determines the move and sends it to
-func update() {
+// UpdateDatabase sends the movement data to database
+func updateDatabse() {
 	for range time.Tick(duration) {
 		fmt.Printf("engine: %d, wheel: %d\n", movement.Engine, movement.Wheel)
 
@@ -105,4 +105,24 @@ func update() {
 		}
 	}
 
+}
+
+// Shutdown calls resetMovement closes the program.
+func shutdown() {
+	resetMovement()
+	fmt.Println("Shutdown")
+	os.Exit(0)
+}
+
+// ResetMovement resets the movement (both engine and wheel) to 0
+func resetMovement() {
+	err := ref.Set(context.Background(), map[string]interface{}{
+		"wheel":  0,
+		"engine": 0,
+	})
+	if err != nil {
+		log.Fatalln("error updating database")
+	}
+
+	fmt.Println("Movement data resetted successfully.")
 }
