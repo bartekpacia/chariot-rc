@@ -36,6 +36,13 @@ const ref = db.ref("chariot_1")
 
 ref.on("child_changed", (snapshot) => {
   // FORWARD-BACKWARD MOVEMENT
+  if (snapshot.key == "test_rotation") {
+    rotation = snapshot.val()
+    console.log(`UPDATE rotation, val: ${rotation}`)
+
+    SERVO.to(rotation)
+  }
+
   if (snapshot.key == "engine") {
     engine = snapshot.val()
     console.log(`UPDATE engine, val: ${engine}`)
