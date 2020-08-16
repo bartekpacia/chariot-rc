@@ -46,7 +46,11 @@ func init() {
 func main() {
 	resetMovement()
 	go updateDatabse()
+	go listenForInput()
+	select {}
+}
 
+func listenForInput() {
 	keysEvents, err := keyboard.GetKeys(0)
 	if err != nil {
 		log.Fatalf("Error getting keyboard events: %v", err)
@@ -116,9 +120,12 @@ func shutdown() {
 
 // ResetMovement resets the movement (both engine and wheel) to 0
 func resetMovement() {
+	movement.Wheel = 0
+	movement.Engine = 0
+
 	err := ref.Set(context.Background(), map[string]interface{}{
-		"wheel":  0,
-		"engine": 0,
+		"wheel":  movement.Wheel,
+		"engine": movement.Engine,
 	})
 	if err != nil {
 		log.Fatalln("error updating database")
