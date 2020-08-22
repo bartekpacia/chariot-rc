@@ -11,7 +11,7 @@ let GREEN
 let SERVO
 
 board.on("ready", () => {
-  const led = new five.Led("GPIO14")
+  const led = new five.Led("P1-13")
   led.blink()
 })
 
