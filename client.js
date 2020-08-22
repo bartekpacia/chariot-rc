@@ -1,6 +1,9 @@
 const admin = require("firebase-admin")
 const five = require("johnny-five")
-const board = new five.Board()
+const Raspi = require("raspi-io").RaspiIO
+const board = new five.Board({
+  io: new Raspi(),
+})
 
 let RED
 let YELLOW
@@ -8,22 +11,8 @@ let GREEN
 let SERVO
 
 board.on("ready", () => {
-  console.log("board is ready!")
-  RED = new five.Led(8)
-  YELLOW = new five.Led(9)
-  GREEN = new five.Led(10)
-  SERVO = new five.Servo(11)
-
-  RED.blink()
-  YELLOW.blink()
-  GREEN.blink()
-
-  setTimeout(function () {
-    RED.stop().off()
-    YELLOW.stop().off()
-    GREEN.stop().off()
-    console.log("program is ready!")
-  }, 2000)
+  const led = new five.Led("P1-13")
+  led.blink()
 })
 
 admin.initializeApp({

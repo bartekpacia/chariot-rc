@@ -24,6 +24,7 @@
   "homepage": "https://github.com/bartekpacia/chariot-rc#readme",
   "dependencies": {
     "firebase-admin": "^9.0.0",
-    "johnny-five": "^2.0.0"
+    "johnny-five": "^2.0.0",
+    "raspi-io": "^11.0.0"
   }
 }
