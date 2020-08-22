@@ -11,8 +11,10 @@ let GREEN
 let SERVO
 
 board.on("ready", () => {
-  const led = new five.Led("P1-13")
-  led.blink()
+  const led8 = new five.Led(8)
+  const led14 = new five.Led(14)
+  led8.blink()
+  led14.blink()
 })
 
 admin.initializeApp({
