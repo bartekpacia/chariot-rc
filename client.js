@@ -1,9 +1,17 @@
 const admin = require("firebase-admin")
 const five = require("johnny-five")
 const Raspi = require("raspi-io").RaspiIO
-const board = new five.Board({
-  io: new Raspi(),
-})
+let board
+
+try {
+  board = new five.Board({
+  	io: new Raspi()
+  })	
+} catch (err) {
+  console.log("failed to connnect to board")
+  console.log(err)
+  process.exit(1)	
+}
 
 let RED
 let YELLOW
@@ -11,8 +19,26 @@ let GREEN
 let SERVO
 
 board.on("ready", () => {
-  const led = new five.Led("P1-13")
-  led.blink()
+  try {
+  	GREEN = new five.Led("GPIO22")
+  	YELLOW = new five.Led("GPIO27")
+  	RED = new five.Led("GPIO17")
+
+  	RED.blink()
+  	YELLOW.blink()
+  	GREEN.blink()
+  	
+ 	setTimeout(() => {
+	  RED.stop().off()
+	  YELLOW.stop().off()
+	  GREEN.stop().off()
+ 	  console.log("program is ready!")
+	}, 2000)
+  	  
+  } catch (err) {
+  	console.log("failed to connect to port")
+  	console.log(err)
+  }
 })
 
 admin.initializeApp({
@@ -29,24 +55,24 @@ ref.on("child_changed", (snapshot) => {
     rotation = snapshot.val()
     console.log(`UPDATE rotation, val: ${rotation}`)
 
-    SERVO.to(rotation)
+    // SERVO.to(rotation)
   }
 
   if (snapshot.key == "engine") {
     engine = snapshot.val()
     console.log(`UPDATE engine, val: ${engine}`)
     if (engine == 1) {
-      SERVO.to(45)
+      // SERVO.to(45)
       RED.off()
       GREEN.on()
       YELLOW.off()
     } else if (engine == 0) {
-      SERVO.to(90)
+      // SERVO.to(90)
       RED.off()
       GREEN.off()
       YELLOW.on()
     } else if (engine == -1) {
-      SERVO.to(170)
+      // SERVO.to(170)
       RED.on()
       GREEN.off()
       YELLOW.off()
