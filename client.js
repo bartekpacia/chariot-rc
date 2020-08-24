@@ -23,6 +23,7 @@ board.on("ready", () => {
   	GREEN = new five.Led("GPIO22")
   	YELLOW = new five.Led("GPIO27")
   	RED = new five.Led("GPIO17")
+  	SERVO = new five.Servo("GPIO10")
 
   	RED.blink()
   	YELLOW.blink()
@@ -55,24 +56,24 @@ ref.on("child_changed", (snapshot) => {
     rotation = snapshot.val()
     console.log(`UPDATE rotation, val: ${rotation}`)
 
-    // SERVO.to(rotation)
+    SERVO.to(rotation)
   }
 
   if (snapshot.key == "engine") {
     engine = snapshot.val()
     console.log(`UPDATE engine, val: ${engine}`)
     if (engine == 1) {
-      // SERVO.to(45)
+      SERVO.to(45)
       RED.off()
       GREEN.on()
       YELLOW.off()
     } else if (engine == 0) {
-      // SERVO.to(90)
+      SERVO.to(90)
       RED.off()
       GREEN.off()
       YELLOW.on()
     } else if (engine == -1) {
-      // SERVO.to(170)
+      SERVO.to(170)
       RED.on()
       GREEN.off()
       YELLOW.off()
