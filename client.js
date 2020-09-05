@@ -25,6 +25,7 @@ board.on("ready", () => {
   	RED = new five.Led("GPIO17")
   	SERVO = new five.Servo("GPIO10")
 
+	console.log("getting ready...")
   	RED.blink()
   	YELLOW.blink()
   	GREEN.blink()
@@ -40,6 +41,12 @@ board.on("ready", () => {
   	console.log("failed to connect to port")
   	console.log(err)
   }
+
+  board.on("exit", () => {
+    RED.off()
+    GREEN.off()
+    YELLOW.off()
+  })
 })
 
 admin.initializeApp({
@@ -79,10 +86,4 @@ ref.on("child_changed", (snapshot) => {
       YELLOW.off()
     }
   }
-})
-
-process.on("exit", () => {
-  RED.off()
-  GREEN.off()
-  YELLOW.off()
 })
